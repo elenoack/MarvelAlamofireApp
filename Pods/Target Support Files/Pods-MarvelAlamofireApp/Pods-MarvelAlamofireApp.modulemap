@@ -1,0 +1,6 @@
+framework module Pods_MarvelAlamofireApp {
+  umbrella header "Pods-MarvelAlamofireApp-umbrella.h"
+
+  export *
+  module * { export * }
+}

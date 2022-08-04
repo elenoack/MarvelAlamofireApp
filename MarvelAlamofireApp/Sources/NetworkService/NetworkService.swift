@@ -19,8 +19,7 @@ enum EndPoint: String {
 
 fileprivate struct Configuration {
     
-    static let baseURL = "https://gateway.marvel.com"
-    static let path = "/v1/public/"
+    static let baseURL = "https://gateway.marvel.com/v1/public/"
     static let apiPublicKey = "7fa387c55663580311962068f57fdf2c"
     static let apiPrivateKey = "270952913c36cdaa7c39f43fb37b96c5d8ae5543"
     static var timestamp: String {
@@ -35,7 +34,7 @@ fileprivate struct Configuration {
 
 public class NetworkService {
     
-    var url: String { "\(Configuration.baseURL)\(Configuration.path)\(EndPoint.characters)" }
+    var url: String { "\(Configuration.baseURL)\(EndPoint.characters)" }
     
     static var limitCount: Int = 0 
     
@@ -55,7 +54,7 @@ public class NetworkService {
             }
         }
         
-        AF.sessionConfiguration.timeoutIntervalForRequest = 90
+        AF.sessionConfiguration.timeoutIntervalForRequest = 70
         AF.request(url, method: .get,
                    parameters: parameters,
                    encoding: URLEncoding.default)
@@ -81,7 +80,7 @@ public class NetworkService {
     
     func fetchComicsData(with id: String, completion: @escaping (Result<[Character], NetworkError>) -> Void) {
         
-        var url: String { "\(Configuration.baseURL)\(Configuration.path)\(EndPoint.characters)/\(id)/\(EndPoint.comics)" }
+        var url: String { "\(Configuration.baseURL)\(EndPoint.characters)/\(id)/\(EndPoint.comics)" }
         
         AF.request(url, method: .get,
                    parameters: ["apikey": Configuration.apiPublicKey,
@@ -106,11 +105,6 @@ public class NetworkService {
                 
                 completion(.success(characters.list))
             }
-//            .responseJSON(completionHandler: { (response) in
-//                     print(response.request) // This returns just the url eg "http://api.com
-//                     print(response.request?.httpBody) // This returns `Optional(85 bytes)`
-//                 })
-     
     }
     
 }

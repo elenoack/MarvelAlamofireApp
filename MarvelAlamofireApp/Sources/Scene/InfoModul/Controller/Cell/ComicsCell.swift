@@ -131,7 +131,7 @@ extension ComicsCell {
         static let minimumScaleFactor: CGFloat = 0.2
         static let indent: CGFloat = 18
         static let basicIndent: CGFloat = 12
-        static let comicsImageHeight: CGFloat = 100
+        static let comicsImageHeight: CGFloat = 110
         static let textHeight: CGFloat = 36
         static let textIndent: CGFloat = 4
     }

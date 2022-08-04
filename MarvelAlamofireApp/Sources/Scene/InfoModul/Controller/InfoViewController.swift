@@ -56,6 +56,15 @@ class InfoViewController: UIViewController, UITableViewDelegate {
         }
         infoView?.descriptionLabel.text = description
     }
+    
+    private func endSetting() {
+        if self.viewModel.comics.value.isEmpty {
+            self.infoView?.tableView.backgroundColor = .black
+            
+        }
+        self.infoView?.backgroundView.isHidden = true
+        self.infoView?.activityIndicator.stopAnimating()
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -86,6 +95,33 @@ extension InfoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Metric.cellHeight
     }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection
+                                section: Int) -> String? {
+      
+       return "Lists of comics:"
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let header = view as? UITableViewHeaderFooterView {
+            header.textLabel?.textColor = UIColor.systemGray
+        }
+    }
+}
+
+// MARK: - Private
+
+extension InfoViewController {
+    
+    private func showError() {
+        let action = UIAlertAction(title: Strings.ok, style: .default, handler: nil)
+        self.showAlert( message: self.viewModel.error.value.localizedDescription,
+                        actions: [action])
+    }
+    
+    private func restart(action: UIAlertAction) {
+        setupView()
+    }
 }
 
 // MARK: - Observing
@@ -102,11 +138,10 @@ extension InfoViewController {
             case .loaded:
                 self.setupImage()
                 self.setupDescription()
+                self.endSetting()
                 self.infoView?.tableView.reloadData()
-                self.infoView?.backgroundView.isHidden = true
-                self.infoView?.activityIndicator.stopAnimating()
             case .fail:
-                print("error")
+                self.showError()
             }
         }
     }
@@ -117,11 +152,12 @@ extension InfoViewController {
 extension InfoViewController {
     
     enum Metric {
-        static let cellHeight: CGFloat = 200
+        static let cellHeight: CGFloat = 210
     }
     
     enum Strings {
-        static let descriptionDefault: String = "Description is missing"
+        static let descriptionDefault: String = "Description is missing."
+        static let ok: String = "OK"
     }
     
 }

@@ -19,7 +19,7 @@ class GalleryView: UIView {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = Strings.placeholder
-        searchController.searchBar.autocapitalizationType = .allCharacters
+        searchController.searchBar.autocapitalizationType = .none
         return searchController
     }()
     
@@ -56,10 +56,26 @@ class GalleryView: UIView {
     lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: (layout))
         collectionView.register(CustomCell.self, forCellWithReuseIdentifier: CustomCell.reuseID)
-        collectionView.backgroundColor = .white
+        collectionView.backgroundView = gradientView
         collectionView.layer.cornerRadius = Metric.radius
         collectionView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         return collectionView
+    }()
+    
+    lazy var gradient: CAGradientLayer = {
+        let gradient = CAGradientLayer()
+        gradient.type = .axial
+        gradient.colors = [
+            UIColor.white.cgColor,
+            UIColor.redCustom.cgColor
+        ]
+        gradient.locations = [0, 1]
+        return gradient
+    }()
+    
+    lazy var gradientView: UIView = {
+        let view = UIView()
+        return view
     }()
     
     lazy var backgroundView: UIView = {

@@ -56,12 +56,6 @@ class GalleryViewModel: NSObject {
         vc.navigationController?.present(navController, animated: true)
     }
     
-    func addCharacters() {
-        NetworkService.limitCount += 1
-        //        networkService.parameters["limit"] = "\(20)"
-        networkService.parameters["offset"] = "\( NetworkService.limitCount)"
-        fetchCharactersData()
-    }
 }
 
 

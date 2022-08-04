@@ -32,17 +32,13 @@ fileprivate struct Configuration {
 
 // MARK: - NetworkService
 
-public class NetworkService {
+class NetworkService {
     
-    var url: String { "\(Configuration.baseURL)\(EndPoint.characters)" }
+    private var url: String { "\(Configuration.baseURL)\(EndPoint.characters)" }
     
-    static var limitCount: Int = 0 
-    
-    var parameters = ["apikey": Configuration.apiPublicKey,
-                      "ts": Configuration.timestamp,
-                      "hash": Configuration.hash,
-//                      "limit" : "\(20)",
-                      "offset" : "\(NetworkService.limitCount)"]
+    private var parameters = ["apikey": Configuration.apiPublicKey,
+                              "ts": Configuration.timestamp,
+                              "hash": Configuration.hash]
     
     func fetchData(with name: String? = nil, completion: @escaping (Result<[Character], NetworkError>) -> Void) {
         
@@ -54,57 +50,58 @@ public class NetworkService {
             }
         }
         
-        AF.sessionConfiguration.timeoutIntervalForRequest = 70
+        AF.sessionConfiguration.timeoutIntervalForRequest = 50
         AF.request(url, method: .get,
                    parameters: parameters,
                    encoding: URLEncoding.default)
-            .validate(statusCode: 200..<299)
-            .validate(contentType: ["application/json"])
-            .responseData { (responseData) in
-               guard let responce = responseData.response
-                else {
-                   return completion(.failure(.serverError)) }
-                
-                if responce.statusCode >= 300 {
-                    completion(.failure(.badURL))
-                }
+        .validate(statusCode: 200..<299)
+        .validate(contentType: ["application/json"])
+        .responseData { (responseData) in
+            guard let responce = responseData.response
+            else {
+                return completion(.failure(.serverError)) }
+            
+            if responce.statusCode >= 300 {
+                completion(.failure(.badURL))
             }
-            .responseDecodable(of: DataModel.self) { (response) in
-                guard let characters = response.value?.data
-                else {
-                    return completion(.failure(.badJSON)) }
-                
-                completion(.success(characters.list))
-            }
+        }
+        .responseDecodable(of: DataModel.self) { (response) in
+            guard let characters = response.value?.data
+            else {
+                return completion(.failure(.badJSON)) }
+            
+            completion(.success(characters.list))
+        }
     }
     
     func fetchComicsData(with id: String, completion: @escaping (Result<[Character], NetworkError>) -> Void) {
         
         var url: String { "\(Configuration.baseURL)\(EndPoint.characters)/\(id)/\(EndPoint.comics)" }
         
+        AF.sessionConfiguration.timeoutIntervalForRequest = 50
         AF.request(url, method: .get,
                    parameters: ["apikey": Configuration.apiPublicKey,
                                 "ts": Configuration.timestamp,
                                 "hash": Configuration.hash],
                    encoding: URLEncoding.default)
-            .validate(statusCode: 200..<299)
-            .validate(contentType: ["application/json"])
-            .responseData { (responseData) in
-               guard let responce = responseData.response
-                else {
-                   return completion(.failure(.serverError)) }
+        .validate(statusCode: 200..<299)
+        .validate(contentType: ["application/json"])
+        .responseData { (responseData) in
+            guard let responce = responseData.response
+            else {
+                return completion(.failure(.serverError)) }
             
-                if responce.statusCode >= 300 {
-                    completion(.failure(.badURL))
-                }
+            if responce.statusCode >= 300 {
+                completion(.failure(.badURL))
             }
-            .responseDecodable(of: DataModel.self) { (response) in
-                guard let characters = response.value?.data
-                else {
-                    return completion(.failure(.badJSON)) }
-                
-                completion(.success(characters.list))
-            }
+        }
+        .responseDecodable(of: DataModel.self) { (response) in
+            guard let characters = response.value?.data
+            else {
+                return completion(.failure(.badJSON)) }
+            
+            completion(.success(characters.list))
+        }
     }
     
 }

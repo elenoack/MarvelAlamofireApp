@@ -33,9 +33,9 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UISearc
     }
     
     override func viewDidLayoutSubviews() {
-           super.viewDidLayoutSubviews()
+        super.viewDidLayoutSubviews()
         setupGradient()
-       }
+    }
     
     // MARK: - Settings
     
@@ -118,33 +118,33 @@ extension GalleryViewController {
         viewModel.fetchCharactersData()
     }
 }
+
+// MARK: - Observing
+
+extension GalleryViewController {
     
-    // MARK: - Observing
-    
-    extension GalleryViewController {
+    private func subscribe() {
+        viewModel.characters.observe(on: self) { [weak self] _ in
+            guard let self = self else { return }
+            self.galleryView?.collectionView.reloadData()
+        }
         
-        func subscribe() {
-            viewModel.characters.observe(on: self) { [weak self] _ in
-                guard let self = self else { return }
-                self.galleryView?.collectionView.reloadData()
-            }
-            
-            viewModel.viewState.observe(on: self) { [weak self] state in
-                guard let self = self else { return }
-                switch state {
-                case .loading:
-                    self.galleryView?.backgroundView.isHidden = false
-                    self.galleryView?.activityIndicator.startAnimating()
-                case .loaded:
-                    self.galleryView?.backgroundView.isHidden = true
-                    self.galleryView?.activityIndicator.stopAnimating()
-                case .fail:
-                    self.showError()
-                }
+        viewModel.viewState.observe(on: self) { [weak self] state in
+            guard let self = self else { return }
+            switch state {
+            case .loading:
+                self.galleryView?.backgroundView.isHidden = false
+                self.galleryView?.activityIndicator.startAnimating()
+            case .loaded:
+                self.galleryView?.backgroundView.isHidden = true
+                self.galleryView?.activityIndicator.stopAnimating()
+            case .fail:
+                self.showError()
             }
         }
     }
-   
+}
+
 // MARK: - Constants
 
 extension GalleryViewController {

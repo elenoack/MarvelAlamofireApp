@@ -70,6 +70,7 @@ class InfoViewController: UIViewController, UITableViewDelegate {
 // MARK: - UITableViewDataSource
 
 extension InfoViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.comics.value.count
     }
@@ -97,9 +98,9 @@ extension InfoViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection
-                                section: Int) -> String? {
-      
-       return "Lists of comics:"
+                   section: Int) -> String? {
+        
+        return "List of comics:"
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -128,7 +129,7 @@ extension InfoViewController {
 
 extension InfoViewController {
     
-    func subscribe() {
+    private func subscribe() {
         viewModel.viewState.observe(on: self) { [weak self] state in
             guard let self = self else { return }
             switch state {

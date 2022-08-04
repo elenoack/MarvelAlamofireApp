@@ -14,7 +14,6 @@ enum SizeImage: String {
     case portraitMedium = "portrait_medium"
 }
 
-
 struct CharacterImage: Decodable {
     private let path: String?
     private let format: String?

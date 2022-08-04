@@ -75,7 +75,7 @@ class CustomCell: UICollectionViewCell {
 
 extension CustomCell {
     
-    func configure() {
+    private func configure() {
         contentView.addSubviewsForAutoLayout([
             shadowView,
             avatarView,

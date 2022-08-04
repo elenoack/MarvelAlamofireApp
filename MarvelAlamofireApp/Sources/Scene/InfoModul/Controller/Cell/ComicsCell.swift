@@ -82,7 +82,7 @@ class ComicsCell: UITableViewCell {
 
 extension ComicsCell {
     
-    func configure() {
+    private func configure() {
         contentView.addSubviewsForAutoLayout([
             basicView,
             blurView,

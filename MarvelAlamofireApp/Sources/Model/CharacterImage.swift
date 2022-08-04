@@ -35,7 +35,7 @@ struct CharacterImage: Decodable {
     var portraitMedium: UIImage? {
         getImage(size: SizeImage.portraitMedium.rawValue)
     }
-        
+    
     private func getImage(size: String) -> UIImage? {
         guard let imagePath = path,
               let imageExtension = format,
@@ -43,11 +43,15 @@ struct CharacterImage: Decodable {
         else {
             return nil }
         
-        guard let data = try? Data(contentsOf: imageURL)
-        else {
-            return nil }
-        
-        return UIImage(data: data)
+        if imagePath.contains("image_not_available") {
+            return UIImage(named: "notImage")
+        } else {
+            guard let data = try? Data(contentsOf: imageURL)
+            else {
+                return nil }
+            
+            return UIImage(data: data)
+        }
     }
     
 }

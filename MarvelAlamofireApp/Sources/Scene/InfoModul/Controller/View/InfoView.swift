@@ -109,7 +109,7 @@ class InfoView: UIView {
             descriptionLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             
-            tableView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 12),
+            tableView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Metric.indent),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -133,7 +133,7 @@ extension InfoView {
         static let radius: CGFloat = 30
         static let textFontBold: CGFloat = 20
         static let textFontRegular: CGFloat = 16
-        static let imageHeight: CGFloat = 200
+        static let imageHeight: CGFloat = 180
         static let indent: CGFloat = 12
         static let indentText: CGFloat = 10
     }

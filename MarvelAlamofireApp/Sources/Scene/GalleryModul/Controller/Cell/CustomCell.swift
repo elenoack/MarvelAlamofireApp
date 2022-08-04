@@ -112,11 +112,11 @@ extension CustomCell {
     
     enum Metric {
         static let radius: CGFloat = 30
-        static let shadowOpacity: Float = 2
-        static let shadowOffsetWidth: CGFloat = 4
-        static let shadowOffsetHeight: CGFloat = 4
+        static let shadowOpacity: Float = 1
+        static let shadowOffsetWidth: CGFloat = 6
+        static let shadowOffsetHeight: CGFloat = 6
         static let textFontBold: CGFloat = 16
-        static let shadowRadius: CGFloat = 4.0
+        static let shadowRadius: CGFloat = 9.0
         static let numberOfLines: Int = 2
         static let blurViewHeight: CGFloat = 40
         static let indent: CGFloat = 8

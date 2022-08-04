@@ -32,6 +32,11 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UISearc
         subscribe()
     }
     
+    override func viewDidLayoutSubviews() {
+           super.viewDidLayoutSubviews()
+        setupGradient()
+       }
+    
     // MARK: - Settings
     
     private func setupNavigationBar() {
@@ -46,15 +51,20 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UISearc
     private func configureView() {
         galleryView?.collectionView.delegate = self
         galleryView?.collectionView.dataSource = self
-        //        galleryView?.collectionView.prefetchDataSource = self
-        //        galleryView?.collectionView.isPrefetchingEnabled = true
-        //
-        //        galleryView?.collectionView.contentInsetAdjustmentBehavior = .never
     }
     
     private func configureSearchController() {
         galleryView?.searchController.searchResultsUpdater = self
         galleryView?.searchController.delegate = self
+    }
+    
+    private func setupGradient() {
+        guard let galleryView = galleryView
+        else {
+            return
+        }
+        galleryView.gradient.frame = galleryView.gradientView.bounds
+        galleryView.gradientView.layer.addSublayer(galleryView.gradient)
     }
 }
 
@@ -80,12 +90,6 @@ extension GalleryViewController: UICollectionViewDataSource {
         let character = viewModel.characters.value[indexPath.row]
         viewModel.presentModalVC(self, characterName: character.name)
     }
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if (indexPath.row == viewModel.characters.value.count - 6)   {
-            //             viewModel.addCharacters()
-        }
-    }
 }
 
 // MARK: - UISearchResultsUpdating
@@ -99,18 +103,6 @@ extension GalleryViewController: UISearchResultsUpdating {
         viewModel.fetchCharactersData(with: text)
     }
 }
-
-//// MARK: - UICollectionViewDataSourcePrefetching
-//
-//extension GalleryViewController: UICollectionViewDataSourcePrefetching {
-//
-// func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-//     for indexPath in indexPaths {
-//         let character = viewModel.characters.value[indexPath.row]
-//            asyncFetcher.fetchAsync(character.identifier)
-//        }
-// }
-//}
 
 // MARK: - Private
 
